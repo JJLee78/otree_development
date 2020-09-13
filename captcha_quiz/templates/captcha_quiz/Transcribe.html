@@ -1,0 +1,93 @@
+{% extends "global/Page.html" %}
+{% load staticfiles otree %}
+{% load i18n %}
+
+{# ****************************************************************************************************************** #}
+{# *** STYLES *** #}
+{# ****************************************************************************************************************** #}
+{% block styles %}
+    <link href="{% static 'icl/css/custom.css' %}" rel="stylesheet">
+{% endblock %}
+
+{# ****************************************************************************************************************** #}
+{# *** TITLE *** #}
+{# ****************************************************************************************************************** #}
+{% block title %}
+    Question {{ subsession.round_number }} of {{ Constants.num_rounds }}
+{% endblock %}
+
+
+
+{% block content %}
+    <div class="wrapper">
+    {% if Constants.progress_bar == True %}
+        <div class="progress">
+            <div class="progress-bar" role="progressbar" style="width:{{ progress|json }}%;">
+                <span class="sr-only"></span>
+            </div>
+        </div>
+    {% endif %}
+
+
+<div class="card">
+            <div class="card-header">
+                {% trans "Type the characters you see in the picture below." %}
+            </div>
+            <table class="table">
+                <tr>
+                    <td>
+                        <img src="{% static image_path %}"/>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                            <p>
+        Please enter the answer:
+
+
+                        {% formfield player.transcribed_text label="" %}
+                        </p>
+                    </th>
+                </tr>
+            </table>
+        </div>
+
+
+
+
+    </div>
+
+
+    {% next_button %}
+
+    {% if debug %}
+        <div class="card border-warning">
+            <div class="card-body">
+            <h4>Explanation for researchers (shown in debug mode only)</h4>
+            <p>
+                You are playing in debug mode, so you can skip the manual
+                transcription
+                by clicking <a href="#" id="prefill">this link</a>
+                and clicking "next".
+            </p>
+
+            <p>
+                A subject can only advance to the next screen if the
+                transcription is {{ required_accuracy }}% accurate.
+            </p>
+            </div>
+        </div>
+
+    {% endif %}
+{% endblock %}
+
+{% block scripts %}
+<script>
+    $(document).ready(function () {
+        var referenceText = {{ reference_text|json }};
+        $('#prefill').click(function () {
+            $('#id_transcribed_text').val(referenceText);
+        })
+    });
+</script>
+{% endblock %}
