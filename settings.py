@@ -26,7 +26,7 @@ USE_POINTS = False
 
 ROOMS = []
 
-
+ALLOWED_HOSTS = ['*']
 # for flexibility, you can set it in the environment variable OTREE_AUTH_LEVEL
 AUTH_LEVEL = environ.get('OTREE_AUTH_LEVEL')
 
@@ -35,7 +35,7 @@ ADMIN_USERNAME = 'admin'
 ADMIN_PASSWORD = environ.get('OTREE_ADMIN_PASSWORD')
 
 # Consider '', None, and '0' to be empty/false
-DEBUG = (environ.get('OTREE_PRODUCTION') in {'', None, '1'})
+DEBUG = (environ.get('OTREE_PRODUCTION') in {'', None, '0'})
 
 DEMO_PAGE_INTRO_HTML = """
  The apps allow conducting the CAPTCHA quiz with MPL.
