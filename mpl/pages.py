@@ -163,6 +163,13 @@ class Results(Page):
                 'payoff':         self.player.payoff
             }
 
+class wheel_code(Page):
+    def is_displayed(self):
+        if Constants.one_choice_per_page:
+            return self.subsession.round_number == Constants.num_rounds
+        else:
+            return True
+
 
 # ******************************************************************************************************************** #
 # *** PAGE SEQUENCE *** #
@@ -174,3 +181,6 @@ if Constants.instructions:
 
 if Constants.results:
     page_sequence.append(Results)
+
+if Constants.wheel_code:
+    page_sequence.append(wheel_code)
