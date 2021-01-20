@@ -1,25 +1,77 @@
-<!DOCTYPE html>
+{% extends "global/Page.html" %}
+{% load staticfiles otree %}
+{% load i18n %}
+
+
+{# ****************************************************************************************************************** #}
+{# *** STYLES *** #}
+{# ****************************************************************************************************************** #}
+{% block styles %}
+    <link href="{% static 'mpl/css/custom.css' %}" rel="stylesheet"/>
+{% endblock %}
+
+{# ****************************************************************************************************************** #}
+{# *** SCRIPTS *** #}
+{# ****************************************************************************************************************** #}
+{% block scripts %}
+    {% if Constants.small_pies == True or Constants.large_pies == True %}
+        <script>
+            num_choices = {{ Constants.num_choices|json }};
+            lottery_a_hi = "{{ lottery_a_hi }}";
+            lottery_a_lo = "{{ lottery_a_lo }}";
+            lottery_b_hi = "{{ lottery_b_hi }}";
+            lottery_b_lo = "{{ lottery_b_lo }}";
+            index_to_pay = {{  index_to_pay|json }};
+            one_choice = "{{ Constants.one_choice_per_page }}";
+            percentage = "{{ Constants.percentage }}";
+            large_pies = "{{ Constants.large_pies }}";
+            console.log("Index to pay 1: " + index_to_pay);
+            WheelTime = "{{ 3000 }}";
+        </script>
+        <script src="https://code.highcharts.com/highcharts.js"></script>
+        <script src="{% static 'mpl/js/pie_charts.js' %}"></script>
+    {% endif %}
+
+
+{% endblock %}
+
+{# ****************************************************************************************************************** #}
+{# *** TITLE *** #}
+{# ****************************************************************************************************************** #}
+{% block title %}
+    {% trans "Wheel" %}
+{% endblock %}
+
+
+{# ****************************************************************************************************************** #}
+{# *** CONTENT *** #}
+{# ****************************************************************************************************************** #}
+{% block content %}
+
+    <div class="scripts">
+            <p>
+
 <html>
 <head>
     <meta charset="utf-8">
     <title>Wheel of Fortune Bingo</title>
-    <style type="text/css">
+    <style type='mpl/css/custom.css' >
     text{
         font-family:Helvetica, Arial, sans-serif;
         font-size:11px;
         pointer-events:none;
     }
     #chart{
-        position:absolute;
+        position:center;
         width:500px;
         height:500px;
         top:0;
         left:0;
     }
     #question{
-        position: absolute;
-        width:400px;
-        height:500px;
+        position: center;
+        width:200px;
+        height:100px;
         top:0;
         left:520px;
     }
@@ -28,7 +80,7 @@
         font-weight: bold;
         font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
         position: absolute;
-        padding: 0;
+        padding: 0px;
         margin: 0;
         top:50%;
         -webkit-transform:translate(0,-50%);
@@ -38,13 +90,16 @@
 
 </head>
 <body>
+
 <div id="chart"></div>
 <div id="question"><h1></h1></div>
 
 <script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
 <script type="text/javascript" charset="utf-8">
+    var index_to_pay = {{  index_to_pay|json }};
+
         var padding = {top:20, right:40, bottom:0, left:0},
-            w = 500 - padding.left - padding.right,
+            w = 1000 - padding.left - padding.right,
             h = 500 - padding.top  - padding.bottom,
             r = Math.min(w, h)/2,
             rotation = 0,
@@ -53,15 +108,16 @@
             oldpick = [],
             color = d3.scale.category20();
         var data = [
-                    {"label":"1",  "value":1,  "question":"What CSS property is used for specifying the area between the content and its border?"}, // padding
-                    {"label":"2",  "value":1,  "question":"What CSS property is used for changing the font?"}, //font-family
-                    {"label":"3",  "value":1,  "question":"What CSS property is used for changing the color of text?"}, //color
-                    {"label":"4",  "value":1,  "question":"What CSS property is used for changing the boldness of text?"}, //font-weight
-                    {"label":"5",  "value":1,  "question":"What CSS property is used for changing the size of text?"}, //font-size
-                    {"label":"6",  "value":1,  "question":"What CSS property is used for changing the background color of a box?"}, //background-color
-                    {"label":"7",  "value":1,  "question":"Which word is used for specifying an HTML tag that is inside another tag?"}, //nesting
-                    {"label":"8",  "value":1,  "question":"Which side of the box is the third number in: margin:1px 1px 1px 1px; ?"}, //bottom
-                    {"label":"9",  "value":1,  "question":"What are the fonts that don't have serifs at the ends of letters called?"}
+                    {"label":"Row 1",  "value":1,  "question":"Row 1"}, // padding
+                    {"label":"Row 2",  "value":1,  "question":"Row 2"}, //font-family
+                    {"label":"Row 3",  "value":1,  "question":"Row 3"}, //color
+                    {"label":"Row 4",  "value":1,  "question":"Row 4"}, //font-weight
+                    {"label":"Row 5",  "value":1,  "question":"Row 5"}, //font-size
+                    {"label":"Row 6",  "value":1,  "question":"Row 6"}, //background-color
+                    {"label":"Row 7",  "value":1,  "question":"Row 7"}, //nesting
+                    {"label":"Row 8",  "value":1,  "question":"Row 8"}, //bottom
+                    {"label":"Row 9",  "value":1,  "question":"Row 9"},
+                    {"label":"Row 10",  "value":1,  "question":"Row 10"}
         ];
         var svg = d3.select('#chart')
             .append("svg")
@@ -101,6 +157,7 @@
         container.on("click", spin);
         function spin(d){
 
+                console.log("Index to pay: " + index_to_pay);
             container.on("click", null);
             //all slices have been seen, all done
             console.log("OldPick: " + oldpick.length, "Data length: " + data.length);
@@ -111,12 +168,13 @@
             }
             var  ps       = 360/data.length,
                  pieslice = Math.round(1440/data.length),
-                 rng      = Math.floor((Math.random() * 1440) + 360);
+                 rng      = 1470 - (index_to_pay * 36);
 
             rotation = (Math.round(rng / ps) * ps);
 
             picked = Math.round(data.length - (rotation % 360)/ps);
-            console.log(picked+1)
+
+
             picked = picked >= data.length ? (picked % data.length) : picked;
             if(oldpick.indexOf(picked) !== -1){
                 //d3.select(this).call(spin);
@@ -126,7 +184,7 @@
             }
             rotation += 90 - Math.round(ps/2);
             vis.transition()
-                .duration(3000)
+                .duration(WheelTime)
                 .attrTween("transform", rotTween)
                 .each("end", function(){
                     //mark question as seen
@@ -139,10 +197,11 @@
 
                     container.on("click", spin);
                 });
+            console.log("picked :" + picked)
         }
         //make arrow
         svg.append("g")
-            .attr("transform", "translate(" + (w + padding.left + padding.right) + "," + ((h/2)+padding.top) + ")")
+            .attr("transform", "translate(" + (700 + padding.left + padding.right) + "," + ((h/2)+padding.top) + ")")
             .append("path")
             .attr("d", "M-" + (r*.15) + ",0L0," + (r*.05) + "L0,-" + (r*.05) + "Z")
             .style({"fill":"black"});
@@ -169,20 +228,23 @@
         }
 
 
-        function getRandomNumbers(){
-            var array = new Uint16Array(1000);
-            var scale = d3.scale.linear().range([360, 1440]).domain([0, 100000]);
-            if(window.hasOwnProperty("crypto") && typeof window.crypto.getRandomValues === "function"){
-                window.crypto.getRandomValues(array);
-                console.log("works");
-            } else {
-                //no support for crypto, get crappy random numbers
-                for(var i=0; i < 1000; i++){
-                    array[i] = Math.floor(Math.random() * 100000) + 1;
-                }
-            }
-            return array;
-        }
     </script>
+
 </body>
 </html>
+        </p>
+
+   <!-- </div>- -->
+    <!-- <div class="wrapper instructions"> -->
+        <!-- <p> -->
+          <!--  {% blocktrans trimmed with n=1 %} -->
+               <!-- Hello -->
+            <!-- {% endblocktrans %} -->
+        <!-- </p> -->
+
+
+    </div>
+
+    {% next_button %}
+
+{% endblock %}

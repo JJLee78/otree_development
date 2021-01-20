@@ -85,6 +85,8 @@ class Constants(BaseConstants):
     # if <results = False>, the template "Decision.html" will not be rendered
     results = True
 
+    wheel_1st = True
+    wheel_2nd = True
     # ---------------------------------------------------------------------------------------------------------------- #
     # --- oTree Settings (Don't Modify) --- #
     # ---------------------------------------------------------------------------------------------------------------- #

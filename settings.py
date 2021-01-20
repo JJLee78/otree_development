@@ -35,8 +35,9 @@ ADMIN_USERNAME = 'admin'
 ADMIN_PASSWORD = 'a1234'
 
 # Consider '', None, and '0' to be empty/false
-#DEBUG = (environ.get('OTREE_PRODUCTION') in {'', None, '1'})
 DEBUG = False
+#DEBUG = (environ.get('OTREE_PRODUCTION') in {'', None, '1'})
+
 
 DEMO_PAGE_INTRO_HTML = """
  The apps allow conducting the CAPTCHA quiz with MPL.

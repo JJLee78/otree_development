@@ -19,7 +19,7 @@ class Transcribe(Page):
             'image_path': 'captcha_quiz/paragraphs/{}.jpg'.format(
                 self.round_number),
             'reference_text': Constants.reference_texts[self.round_number - 1],
-            'debug': True,
+            'debug': False,
             'required_accuracy': 100,
             'page': page,
             'total': total,

@@ -1,3 +1,5 @@
+from typing import Type, List, Union
+
 from otree.api import Currency as c, currency_range
 from . import models
 from ._builtin import Page, WaitPage
@@ -29,7 +31,7 @@ class Instructions(Page):
     # ----------------------------------------------------------------------------------------------------------------
     def vars_for_template(self):
         return {
-            'num_choices':  len(self.participant.vars['mpl_choices'])
+            'num_choices': len(self.participant.vars['mpl_choices'])
         }
 
 
@@ -37,7 +39,6 @@ class Instructions(Page):
 # *** PAGE DECISION *** #
 # ******************************************************************************************************************** #
 class Decision(Page):
-
     # form model
     # ----------------------------------------------------------------------------------------------------------------
     form_model = 'player'
@@ -67,14 +68,14 @@ class Decision(Page):
 
         if Constants.one_choice_per_page:
             return {
-                'page':      page,
-                'total':     total,
-                'progress':  progress,
-                'choices':   [self.player.participant.vars['mpl_choices'][page - 1]]
+                'page': page,
+                'total': total,
+                'progress': progress,
+                'choices': [self.player.participant.vars['mpl_choices'][page - 1]]
             }
         else:
             return {
-                'choices':   self.player.participant.vars['mpl_choices']
+                'choices': self.player.participant.vars['mpl_choices']
             }
 
     # set player's payoff
@@ -152,35 +153,65 @@ class Results(Page):
 
         if Constants.one_choice_per_page:
             return {
-                'choice_to_pay':  [choice_to_pay],
-                'option_to_pay':  self.player.in_round(round_to_pay).option_to_pay,
-                'payoff':         self.player.in_round(round_to_pay).payoff,
+                'choice_to_pay': [choice_to_pay],
+                'option_to_pay': self.player.in_round(round_to_pay).option_to_pay,
+                'payoff': self.player.in_round(round_to_pay).payoff,
             }
         else:
             return {
-                'choice_to_pay':  [choice_to_pay],
-                'option_to_pay':  self.player.option_to_pay,
-                'payoff':         self.player.payoff
+                'choice_to_pay': [choice_to_pay],
+                'option_to_pay': self.player.option_to_pay,
+                'payoff': self.player.payoff
             }
 
-class wheel_code(Page):
+
+class Wheel(Page):
+    # only display instruction in round 1
+    # ----------------------------------------------------------------------------------------------------------------
+
     def is_displayed(self):
-        if Constants.one_choice_per_page:
-            return self.subsession.round_number == Constants.num_rounds
-        else:
-            return True
+        index_to_pay = self.player.participant.vars['mpl_index_to_pay']
+        return self.round_number == Constants.num_rounds
+    def vars_for_template(self):
+        return {
+            'index_to_pay': self.player.participant.vars['mpl_index_to_pay']
+        }
+     #   index_to_pay = self.player.participant.vars['mpl_index_to_pay']
+
+
+      #  table_rows = []
+      #  for prev_player in self.player.in_all_rounds():
+      #      row = {
+      #          'choice_to_pay': self.player.choice_to_pay,
+      #          'option_to_pay': self.player.option_to_pay,
+      #          'index_to_pay': self.player.participant.vars['mpl_index_to_pay'],
+      #          'constants_val': Constants.num_rounds
+      #      }
+      #      table_rows.append(row)
+      #  return {'table_rows' : table_rows}
+
 
 
 # ******************************************************************************************************************** #
 # *** PAGE SEQUENCE *** #
 # ******************************************************************************************************************** #
-page_sequence = [Decision]
+page_sequence: List[Type[Union[Decision, Instructions, Wheel, Results]]] = [Decision]
 
 if Constants.instructions:
     page_sequence.insert(0, Instructions)
 
+if Constants.wheel_1st:
+    page_sequence.append(Wheel)
+
 if Constants.results:
     page_sequence.append(Results)
 
-if Constants.wheel_code:
-    page_sequence.append(wheel_code)
+#if Constants.wheel_1st:
+    
+    
+ #   page_sequence.append(Wheel)
+
+# page_sequence = [Results]
+
+# if Constants.wheel_1st:
+#    page_sequence.append(Wheel)
