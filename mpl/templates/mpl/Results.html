@@ -26,6 +26,7 @@
             one_choice = "{{ Constants.one_choice_per_page }}";
             percentage = "{{ Constants.percentage }}";
             large_pies = "{{ Constants.large_pies }}";
+
         </script>
         <script src="https://code.highcharts.com/highcharts.js"></script>
         <script src="{% static 'mpl/js/pie_charts.js' %}"></script>
@@ -203,21 +204,46 @@
         <!-- ------------------------------------------------------------------------------------------------------- -->
         <div class="card info">
             <p>
-                {% blocktrans trimmed with option_to_pay=option_to_pay %}
-                    As indicated above, you decided to opt for option {{ option_to_pay }} in this decision.
-                    For the chosen option, one of the two possible outcomes has been randomly realized based
-                    on the corresponding probabilities.
-                {% endblocktrans %}
+                {% if option_to_pay == 'A' %}
+                    <p>
+                    {% blocktrans trimmed with option_to_pay=option_to_pay %}
+                        As indicated above, you decided to opt for option {{ option_to_pay }} in this decision.
+                    {% endblocktrans %}
+                    </p>
+                {% elif option_to_pay == 'B' %}
+                    {% if wheel_show == True and payoff_show == False %}
+                    <p>
+                        {% blocktrans trimmed with option_to_pay=option_to_pay %}
+                        As indicated above, you decided to opt for option {{ option_to_pay }} in this decision.
+                        For the chosen option, one of the two possible outcomes has been randomly realized based
+                        on the corresponding probabilities.
+                        {% endblocktrans %}
+                    </p>
+                    {% elif payoff_show == True %}
+                    <p>
+                        {% blocktrans trimmed with payoff=payoff %}
+                        Your payoff in this task equals <b>{{ payoff }}</b>.
+                        {% endblocktrans %}
+                    </p>
+                    {% endif %}
+
+
+                {% endif %}
+
+
             </p>
             <p>
-                {% blocktrans trimmed with payoff=payoff %}
-                    Your payoff in this task equals <b>{{ payoff }}</b>.
-                {% endblocktrans %}
+                {% if option_to_pay == 'A' %}
+                    {% blocktrans trimmed with payoff=payoff %}
+                        Your payoff in this task equals <b>{{ payoff }}</b>.
+                    {% endblocktrans %}
+                {% endif %}
             </p>
         </div>
 
     </div>
+    {% if option_to_pay == 'B' %}
 
-    <!--{% next_button %}-->
-
+        {% next_button %}
+    {% endif %}
 {% endblock %}

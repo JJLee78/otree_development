@@ -38,11 +38,9 @@ ADMIN_PASSWORD = 'a1234'
 DEBUG = False
 #DEBUG = (environ.get('OTREE_PRODUCTION') in {'', None, '1'})
 
-
 DEMO_PAGE_INTRO_HTML = """
  The apps allow conducting the CAPTCHA quiz with MPL.
  """
-
 
 # don't share this with anybody.
 SECRET_KEY = 'ot'

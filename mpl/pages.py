@@ -150,32 +150,53 @@ class Results(Page):
         index_to_pay = self.player.participant.vars['mpl_index_to_pay']
         round_to_pay = indices.index(index_to_pay) + 1
         choice_to_pay = self.participant.vars['mpl_choices'][round_to_pay - 1]
-
+        wheel_show = self.player.wheel_show
+        payoff_show = self.player.payoff_show
         if Constants.one_choice_per_page:
             return {
                 'choice_to_pay': [choice_to_pay],
                 'option_to_pay': self.player.in_round(round_to_pay).option_to_pay,
                 'payoff': self.player.in_round(round_to_pay).payoff,
+                'wheel_show': self.player.wheel_show,
+                'payoff_show': self.player.payoff_show
             }
         else:
             return {
                 'choice_to_pay': [choice_to_pay],
                 'option_to_pay': self.player.option_to_pay,
-                'payoff': self.player.payoff
+                'payoff': self.player.payoff,
+                'wheel_show': self.player.wheel_show,
+                'payoff_show': self.player.payoff_show
             }
-
+    def before_next_page(self):
+        self.player.payoff_show = True
 
 class Wheel(Page):
     # only display instruction in round 1
     # ----------------------------------------------------------------------------------------------------------------
+   # timeout_seconds = 5
 
     def is_displayed(self):
         index_to_pay = self.player.participant.vars['mpl_index_to_pay']
         return self.round_number == Constants.num_rounds
     def vars_for_template(self):
         return {
+            'wheel_show': self.player.wheel_show,
+            'button_show': self.player.button_show,
+            'payoff': self.player.payoff,
             'index_to_pay': self.player.participant.vars['mpl_index_to_pay']
         }
+
+    def before_next_page(self):
+      #  player = self.player
+       # timeout_happened = self.timeout_happened
+       # if timeout_happened:
+        #    player.button_show = True
+        if self.player.option_to_pay == 'B':
+            self.player.wheel_show = True
+        elif self.player.option_to_pay == 'A':
+            self.player.wheel_show = False
+
      #   index_to_pay = self.player.participant.vars['mpl_index_to_pay']
 
 
@@ -195,7 +216,7 @@ class Wheel(Page):
 # ******************************************************************************************************************** #
 # *** PAGE SEQUENCE *** #
 # ******************************************************************************************************************** #
-page_sequence: List[Type[Union[Decision, Instructions, Wheel, Results]]] = [Decision]
+page_sequence: List[Type[Union[Decision, Instructions, Wheel, Results, Wheel, Results]]] = [Decision]
 
 if Constants.instructions:
     page_sequence.insert(0, Instructions)
@@ -205,6 +226,13 @@ if Constants.wheel_1st:
 
 if Constants.results:
     page_sequence.append(Results)
+
+if Constants.wheel_2nd:
+    page_sequence.append(Wheel)
+
+if Constants.results:
+    page_sequence.append(Results)
+
 
 #if Constants.wheel_1st:
     

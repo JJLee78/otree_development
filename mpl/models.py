@@ -101,7 +101,9 @@ class Player(BasePlayer):
     option_to_pay = models.StringField()
     inconsistent = models.IntegerField()
     switching_row = models.IntegerField()
-
+    wheel_show = models.BooleanField()
+    payoff_show = models.BooleanField()
+    button_show = models.BooleanField()
     # set player's payoff
     # ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
     def set_payoffs(self):
@@ -131,7 +133,7 @@ class Player(BasePlayer):
         # set payoff as global variable
         # ------------------------------------------------------------------------------------------------------------
         self.participant.vars['mpl_payoff'] = self.payoff
-
+        self.payoff_show = False
     # determine consistency
     # ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
     def set_consistency(self):
