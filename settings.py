@@ -12,6 +12,7 @@ SESSION_CONFIGS = [
         'display_name': "CAPTCHA Quiz with Multiple Price List",
         'num_demo_participants': 1,
         'app_sequence': ['captcha_quiz', 'mpl'],
+        #'app_sequence': ['mpl'],
     },
 
 ]
