@@ -51,6 +51,15 @@
 {# ****************************************************************************************************************** #}
 {% block content %}
 
+        <div class="instructions_wheel">
+
+        <p>
+              Press the spin button in the middle of the wheel to spin the wheel.
+        </p>
+
+
+    </div>
+
     <div class="scripts">
             <p>
 
@@ -111,7 +120,7 @@
             picked = 100000,
             oldpick = [],
             color = d3.scale.category20();
-     //   index_to_pay = 3;
+         index_to_pay = 9;
       //  payoff = 3.85;
         var data = [
                     {"label":"Row 1",  "value":1,  "question":"Row 1"}, // padding
@@ -378,32 +387,32 @@
 
 
 
-//index_to_pay = 3;
+   //     index_to_pay = 9;
   //      payoff = 3.85;
         console.log("wheel real:" + wheel_2nd);
             console.log("index_to_pay real:" + index_to_pay);
             console.log("payoff real:" + payoff);
-            if(wheel_2nd == true)
-            {
-                console.log("payoff real:" + payoff);
-                if(payoff == 0.1)
-                {
-                    console.log("bomb");
-                    //rng      =  Math.floor(2160+ 270 +(18 * index_to_pay)); //only one number
-                    rng      =  Math.floor(  720 + (36 * (index_to_pay + 1)));
-                }
-                else
-                {
-                    //rng      =  Math.floor(2160+ 90 + (18 * index_to_pay)); //only one number
-                    rng      =  Math.floor(  720 +  (18 * (index_to_pay + 1)));
-                }
-            }
+        //    if(wheel_2nd == true)
+          //  {
+            //    console.log("payoff real:" + payoff);
+             //   if(payoff == 0.1)
+              //  {
+               //     console.log("bomb");
+                    // x rng      =  Math.floor(2160+ 270 +(18 * index_to_pay)); //only one number
+                 //   rng      =  Math.floor(  720 + (36 * (index_to_pay + 1)));
+                //}
+                //else
+                //{
+                    // x rng      =  Math.floor(2160+ 90 + (18 * index_to_pay)); //only one number
+                 //   rng      =  Math.floor(  720 +  (18 * (index_to_pay + 1)));
+                //}
+           // }
 
 
 
-            if(wheel_2nd == true)
-                rotation = (rng / ps) * ps;
-            else
+        //    if(wheel_2nd == true)
+          //      rotation = (rng / ps) * ps;
+           // else
                 rotation = (Math.round(rng / ps) * ps);
 
             picked = Math.round(data.length - (rotation % 360)/ps);
