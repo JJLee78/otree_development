@@ -4,6 +4,25 @@ from .models import Constants, cmp, distance_and_ok
 from django.conf import settings
 
 
+class Instructions(Page):
+    form_model = 'player'
+    #form_fields = ['total_round_num']
+    live_method = 'live_bid'
+    # only display instruction in round 1
+    # ----------------------------------------------------------------------------------------------------------------
+    def is_displayed(self):
+        return self.subsession.round_number == 1
+
+    # variables for template
+    # ----------------------------------------------------------------------------------------------------------------
+    def vars_for_template(self):
+        return {
+            'num_choices': len(self.participant.vars['mpl_choices'])
+        }
+
+    #def before_next_page(self):
+    #    self.subsession.total_round_num = total_round_num
+
 class Transcribe(Page):
     form_model = 'player'
     form_fields = ['transcribed_text']
@@ -11,7 +30,9 @@ class Transcribe(Page):
     def vars_for_template(self):
 
         # specify info for progress bar
-        total = Constants.num_rounds
+        print('Player.total_round_num on pages:', self.subsession.total_round_num)
+        self.subsession.total_round_num = self.session.config['num_rounds']
+        total = self.subsession.total_round_num
         page = self.subsession.round_number
         progress = page / total * 100
 
@@ -20,9 +41,11 @@ class Transcribe(Page):
                 self.round_number),
             'reference_text': Constants.reference_texts[self.round_number - 1],
             'debug': False,
+            #'debug': True,
             'required_accuracy': 100,
             'page': page,
             'total': total,
+            'num_rounds': self.session.config['num_rounds'],
             'progress': progress
 
         }
@@ -39,9 +62,16 @@ class Transcribe(Page):
     def before_next_page(self):
         self.player.payoff = 0
 
+    def app_after_this_page(self, upcoming_apps):
+        #total = self.subsession.total_round_num
+        total = self.session.config['num_rounds']
+        now = self.player.round_number
+        if total == now:
+            return "mpl"
 
 class Results(Page):
     def is_displayed(self):
+        #return self.round_number == self.player.total_round_num
         return self.round_number == Constants.num_rounds
 
     def vars_for_template(self):

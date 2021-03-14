@@ -1,0 +1,64 @@
+{% extends "global/Page.html" %}
+{% load staticfiles otree %}
+{% load i18n %}
+
+
+{# ****************************************************************************************************************** #}
+{# *** STYLES *** #}
+{# ****************************************************************************************************************** #}
+{% block styles %}
+    <link href="{% static 'mpl/css/custom.css' %}" rel="stylesheet"/>
+{% endblock %}
+
+
+{# ****************************************************************************************************************** #}
+{# *** TITLE *** #}
+{# ****************************************************************************************************************** #}
+{% block title %}
+    {% trans "Instructions" %}
+{% endblock %}
+
+
+{# ****************************************************************************************************************** #}
+{# *** CONTENT *** #}
+{# ****************************************************************************************************************** #}
+{% block content %}
+
+
+    <div class="card">
+            <table class="table">
+                <tr>
+                    <th>
+                        <p>
+                             Please input the number of questions :
+
+                             <input id="inputbox" type="number">
+                             <button type="button" onclick="sendValue()">Send</button>
+                        </p>
+                    </th>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <script>
+
+
+    let history = document.getElementById('history');
+    let inputbox = document.getElementById('inputbox');
+    let sendbutton = document.getElementById('sendbutton');
+
+    function liveRecv(data) {
+        history.innerHTML = data.bid;
+    }
+
+
+     function sendValue() {
+         liveSend(parseInt(inputbox.value));
+     }
+    </script>
+
+    {% next_button %}
+
+
+{% endblock %}
+

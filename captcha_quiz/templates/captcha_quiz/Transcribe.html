@@ -13,7 +13,7 @@
 {# *** TITLE *** #}
 {# ****************************************************************************************************************** #}
 {% block title %}
-    Question {{ subsession.round_number }} of {{ Constants.num_rounds }}
+    Question {{ subsession.round_number }} of {{ subsession.total_round_num }}
 {% endblock %}
 
 
@@ -30,6 +30,10 @@
 
 
 <div class="card">
+    <script>
+            total_round_num = {{ Subsession.total_round_num|json }};
+            console.log("total_round_num: " + total_round_num);
+        </script>
             <div class="card-header">
                 {% trans "Type the characters you see in the picture below." %}
             </div>
@@ -45,7 +49,8 @@
         Please enter the answer:
 
 
-                        {% formfield player.transcribed_text label="" %}
+                                {% formfield player.transcribed_text label="" %}
+                                {#  {% formfield Constants.num_rounds="" %} #}
                         </p>
                     </th>
                 </tr>

@@ -2,6 +2,7 @@ from os import environ
 
 SESSION_CONFIG_DEFAULTS = {
     'real_world_currency_per_point': 1.00,
+    'num_rounds': 10,
     'participation_fee': 0.00,
     'doc': "",
 }
@@ -12,6 +13,10 @@ SESSION_CONFIGS = [
         'display_name': "CAPTCHA Quiz with Multiple Price List",
         'num_demo_participants': 1,
         'app_sequence': ['captcha_quiz', 'mpl'],
+        'num_rounds': 10,
+        'doc': """
+        Edit the 'num_rounds' parameter to change the number of CAPTCHA questions.
+        """
         #'app_sequence': ['mpl'],
     },
 
@@ -42,6 +47,8 @@ DEBUG = False
 DEMO_PAGE_INTRO_HTML = """
  The apps allow conducting the CAPTCHA quiz with MPL.
  """
+
+NUM_ROUNDS = 8
 
 # don't share this with anybody.
 SECRET_KEY = 'ot'

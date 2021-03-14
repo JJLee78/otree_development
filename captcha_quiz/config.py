@@ -2,9 +2,8 @@
 from otree.api import Currency as c
 from otree.constants import BaseConstants
 # </imports>
-
+#from otree.session import get_session_configs_dict
 class Constants(BaseConstants):
-    num_choices = 500
     probability = 50.00
     sure_payoff = 160.00
 
@@ -20,4 +19,4 @@ class Constants(BaseConstants):
 
     name_in_url = 'captcha_quiz'
     players_per_group = None
-    num_rounds = num_choices
+    num_rounds = 10
