@@ -15,7 +15,7 @@ SESSION_CONFIGS = [
         'app_sequence': ['captcha_quiz', 'mpl'],
         'num_rounds': 10,
         'doc': """
-        Edit the 'num_rounds' parameter to change the number of CAPTCHA questions.
+        Edit the 'num_rounds' parameter to change the number of CAPTCHA questions. (1 - 700)
         """
         #'app_sequence': ['mpl'],
     },
