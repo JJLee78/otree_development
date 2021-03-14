@@ -32,6 +32,11 @@ class Transcribe(Page):
         # specify info for progress bar
         print('Player.total_round_num on pages:', self.subsession.total_round_num)
         self.subsession.total_round_num = self.session.config['num_rounds']
+        if self.subsession.total_round_num > 700:
+            self.subsession.total_round_num = 700
+        if self.subsession.total_round_num < 1:
+            self.subsession.total_round_num = 1
+
         total = self.subsession.total_round_num
         page = self.subsession.round_number
         progress = page / total * 100
